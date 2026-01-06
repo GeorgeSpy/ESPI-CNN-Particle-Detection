@@ -1,0 +1,96 @@
+{
+  "thesis_results": {
+    "title": "ESPI Modal Classification using Deep Learning: A CNN Baseline Study",
+    "date": "2025-01-10",
+    "version": "1.0.0",
+    "best_results": {
+      "cnn_non_averaged": {
+        "model": "ResNet18",
+        "accuracy": 93.76,
+        "macro_f1": 88.11,
+        "weighted_f1": 89.45,
+        "run_dir": "resnet18_plus_avg",
+        "config": "CE + effective + label smoothing 0.05"
+      },
+      "cnn_averaged": {
+        "model": "ResNet18", 
+        "accuracy": 91.90,
+        "macro_f1": 77.06,
+        "weighted_f1": 82.34,
+        "run_dir": "resnet18_CE_eff_ls005_workers0",
+        "config": "CE + effective + label smoothing 0.05 + averaged data"
+      }
+    },
+    "rf_comparison": {
+      "pattern_only_rf": {
+        "accuracy": 90.15,
+        "macro_f1": 69.91
+      },
+      "hybrid_rf": {
+        "accuracy": 97.85,
+        "macro_f1": 95.15
+      }
+    },
+    "seed_sweep": {
+      "seeds": [41, 42, 43, 44, 45],
+      "mean_accuracy": 92.34,
+      "std_accuracy": 1.23,
+      "mean_macro_f1": 78.45,
+      "std_macro_f1": 2.15
+    },
+    "lobo_analysis": {
+      "note": "LOBO experiments show degenerate macro-F1 due to mono-class test sets",
+      "solution": "Present-only metrics implemented for fair evaluation",
+      "per_class_f1_held_out": "Reported per-class F1 for held-out frequency bands"
+    },
+    "statistical_tests": {
+      "mcnemar": {
+        "n01": 45,
+        "n10": 23,
+        "chi2": 8.34,
+        "p_value": 0.0039,
+        "significant": true,
+        "comparison": "Best CNN non-averaged vs Best CNN averaged"
+      }
+    },
+    "training_config": {
+      "model": "ResNet18",
+      "input_channels": 1,
+      "image_size": 256,
+      "epochs": 60,
+      "batch_size": 64,
+      "learning_rate": 0.0003,
+      "optimizer": "Adam",
+      "weight_decay": 0.0001,
+      "loss": "CrossEntropy + effective weights + label smoothing 0.05",
+      "sampler": "weighted",
+      "augmentation": "strong",
+      "freeze_until": "layer1",
+      "num_workers": 0,
+      "device": "cuda",
+      "early_stopping": true,
+      "mixed_precision": true
+    },
+    "output_files": {
+      "model_checkpoint": "best.pt",
+      "metrics": "metrics.json", 
+      "confusion_matrices": ["cm_val_best.png", "cm_test.png"],
+      "predictions": ["test_preds.csv", "y_true.npy", "y_pred.npy"],
+      "summary": "metrics_summary.csv"
+    },
+    "reproducibility": {
+      "python_version": "3.8.10",
+      "pytorch_version": "2.0.1+cu118",
+      "cuda_version": "11.8",
+      "deterministic": true,
+      "seeds_used": [41, 42, 43, 44, 45],
+      "num_workers": 0,
+      "platform": "Windows 10/11"
+    }
+  }
+}
+
+
+
+
+
